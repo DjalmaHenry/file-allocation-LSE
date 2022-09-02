@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Aplicacao {
@@ -5,6 +6,7 @@ public class Aplicacao {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         Particao particao = new Particao();
+        ArrayList<String> buffer = new ArrayList<String>();
         int op;
         String info;
         while (true) {
@@ -13,6 +15,7 @@ public class Aplicacao {
             System.out.println("2 - Remover uma informação.");
             System.out.println("3 - Consultar uma informação.");
             System.out.println("4 - Exibir todas informações.");
+            System.out.println("5 - Limpar buffer.");
             System.out.println("0 - Sair do programa.");
             System.out.println("Informe a opção desejada:");
             System.out.print("-> ");
@@ -23,7 +26,8 @@ public class Aplicacao {
                     System.out.print("-> ");
                     info = in.next();
                     in.nextLine();
-                    particao.inserirValor(info);
+                    buffer.add(info);
+                    particao.inserirValor(buffer.get(buffer.size() - 1));
                     break;
                 case 2:
                     System.out.println("Informe algo para remover do armazenamento:");
@@ -37,10 +41,17 @@ public class Aplicacao {
                     System.out.print("-> ");
                     info = in.next();
                     in.nextLine();
-                    particao.exibirValor(info);
+                    boolean result = buscaBuffer(info, buffer);
+                    if (!result) {
+                        particao.exibirValor(info);
+                    }
                     break;
                 case 4:
                     particao.exibirValores();
+                    break;
+                case 5:
+                    System.out.println("Buffer limpo!");
+                    buffer.clear();
                     break;
                 case 0:
                     System.out.println("Adeus!");
@@ -50,5 +61,17 @@ public class Aplicacao {
                     System.err.println("Opção inválida");
             }
         }
+    }
+
+    public static boolean buscaBuffer(String info, ArrayList<String> buffer) {
+        for (int i = 0; i < buffer.size(); i++) {
+            if (buffer.get(i).compareTo(info) == 0) {
+                System.out.println("Achou no buffer!");
+                System.out.println("Info: " + buffer.get(i));
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -20,6 +20,7 @@ public class Particao {
         if (aux == null) {
             System.err.println("Informação NÃO existe na partição!");
         } else {
+            System.out.println("Achou na partição!");
             System.out.println(aux);
         }
     }
