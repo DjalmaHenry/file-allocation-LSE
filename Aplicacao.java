@@ -1,12 +1,18 @@
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Aplicacao {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, IOException {
         Scanner in = new Scanner(System.in);
-        Particao particao = new Particao();
+        // Particao particao = new Particao();
         ArrayList<String> buffer = new ArrayList<String>();
+        ArrayList<byte[]> particao = new ArrayList<byte[]>();
         int op;
         String info;
         while (true) {
@@ -27,27 +33,31 @@ public class Aplicacao {
                     info = in.next();
                     in.nextLine();
                     buffer.add(info);
-                    particao.inserirValor(buffer.get(buffer.size() - 1));
+                    // particao.inserirValor(buffer.get(buffer.size() - 1));
+                    byte[] bytes = stringToByte(info);
+                    System.out.println(bytes);
+                    String result = byteToString(bytes);
+                    System.out.println(result);
                     break;
                 case 2:
                     System.out.println("Informe algo para remover do armazenamento:");
                     System.out.print("-> ");
                     info = in.next();
                     in.nextLine();
-                    particao.removerValor(info);
+                    // particao.removerValor(info);
                     break;
                 case 3:
                     System.out.println("Informe algo para exibir:");
                     System.out.print("-> ");
                     info = in.next();
                     in.nextLine();
-                    boolean result = buscaBuffer(info, buffer);
-                    if (!result) {
-                        particao.exibirValor(info);
-                    }
+                    // boolean result = buscaBuffer(info, buffer);
+                    // if (!result) {
+                    //     particao.exibirValor(info);
+                    // }
                     break;
                 case 4:
-                    particao.exibirValores();
+                    // particao.exibirValores();
                     break;
                 case 5:
                     System.out.println("Buffer limpo!");
@@ -73,5 +83,25 @@ public class Aplicacao {
         }
 
         return false;
+    }
+
+    private static byte[] stringToByte(String info) throws IOException {
+        Object obj = (Object) info;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(obj);
+        objectOutputStream.flush();
+        objectOutputStream.close();
+        byteArrayOutputStream.close();
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    private static String byteToString(byte[] bytes) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+        Object object = objectInputStream.readObject();
+        objectInputStream.close();
+        String info = (String) object;
+        return info;
     }
 }
