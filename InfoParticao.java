@@ -8,11 +8,11 @@ public class InfoParticao implements Comparable<InfoParticao> {
         this.nome = nome;
     }
 
-    private int getInicio() {
+    public int getInicio() {
         return this.inicio;
     }
 
-    private String getNome() {
+    public String getNome() {
         return this.nome;
     }
 

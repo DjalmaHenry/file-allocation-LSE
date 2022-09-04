@@ -75,10 +75,12 @@ public class Aplicacao {
                     System.out.print("-> ");
                     info = in.next();
                     in.nextLine();
-                    // boolean result = buscaBuffer(info, buffer);
-                    // if (!result) {
-                    // particao.exibirValor(info);
-                    // }
+                    boolean result = buscaBuffer(info, buffer);
+                    if (!result) {
+                        int inicio = buscaInicioParticao(info, infoParticao);
+                        byte[] bytesArquivo = montaArquivo(inicio);
+                        String arquivo = byteToString(bytesArquivo);
+                    }
                     break;
                 case 4:
                     // particao.exibirValores();
@@ -127,5 +129,14 @@ public class Aplicacao {
         objectInputStream.close();
         String info = (String) object;
         return info;
+    }
+
+    private static int buscaInicioParticao(String info, ArrayList<InfoParticao> infoParticao) {
+        for (int i = 0; i < infoParticao.size(); i++) {
+            if (infoParticao.get(i).getNome().compareTo(info) == 0) {
+                return infoParticao.get(i).getInicio();
+            }
+        }
+        return -1;
     }
 }
