@@ -1,30 +1,34 @@
 public class Arquivo implements Comparable<Arquivo> {
 
-    private String info;
+    private int prox;
+    private String nome;
+    private byte[] info;
 
-    public Arquivo(String info) {
+    public Arquivo(int prox, String nome, byte[] info) {
+        this.prox = prox;
+        this.nome = nome;
         this.info = info;
     }
 
-    private String getInfo() {
+    private int getProx() {
+        return this.prox;
+    }
+
+    private String getNome() {
+        return this.nome;
+    }
+
+    private byte[] getInfo() {
         return this.info;
     }
 
-    private void setTInfo(String novaInfo) {
-        this.info = novaInfo;
-    }
-
-    public void atualizaInfo(String info) {
-        this.setTInfo(info);
-    }
-
     public String toString() {
-        return "Info: " + this.getInfo();
+        return "Próximo: " + this.getProx() + "Nome: " + this.getNome() + "Info: " + this.getInfo();
     }
 
-    public int compareTo(Arquivo particao) {
+    public int compareTo(Arquivo arquivo) {
         int result;
-        result = this.info.compareTo(particao.info);
+        result = this.nome.compareTo(arquivo.nome);
         return result;
     }
 }

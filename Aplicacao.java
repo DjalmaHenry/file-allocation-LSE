@@ -12,7 +12,8 @@ public class Aplicacao {
         Scanner in = new Scanner(System.in);
         // Particao particao = new Particao();
         ArrayList<String> buffer = new ArrayList<String>();
-        ArrayList<byte[]> particao = new ArrayList<byte[]>();
+        ArrayList<InfoParticao> infoParticao = new ArrayList<InfoParticao>();
+        ArrayList<Arquivo> particao = new ArrayList<Arquivo>();
         int op;
         String info;
         while (true) {
@@ -30,14 +31,37 @@ public class Aplicacao {
                 case 1:
                     System.out.println("Informe algo para armazenar:");
                     System.out.print("-> ");
+                    // capturando informacao
                     info = in.next();
                     in.nextLine();
+
+                    // adicionando informacao ao buffer
                     buffer.add(info);
-                    // particao.inserirValor(buffer.get(buffer.size() - 1));
+
+                    // salvando localizacao da informacao na particao
+                    InfoParticao inf = new InfoParticao(0, info);
+                    infoParticao.add(inf);
+
+                    // convertendo informacao para bytes
                     byte[] bytes = stringToByte(info);
-                    System.out.println(bytes);
-                    String result = byteToString(bytes);
-                    System.out.println(result);
+
+                    // quebrando a informacao para salvar particionado
+                    int n = bytes.length;
+                    byte[] b1 = new byte[(n + 1) / 2];
+                    byte[] b2 = new byte[n - b1.length];
+                    for (int i = 0; i < n; i++) {
+                        if (i < b1.length) {
+                            b1[i] = bytes[i];
+                        } else {
+                            b2[i - b1.length] = bytes[i];
+                        }
+                    }
+                    Arquivo arq1 = new Arquivo(4, info, b1);
+                    Arquivo arq2 = new Arquivo(-1, info, b2);
+
+                    // guardando arquivo particionado
+                    particao.set(0, arq1);
+                    particao.set(4, arq2);
                     break;
                 case 2:
                     System.out.println("Informe algo para remover do armazenamento:");
@@ -53,7 +77,7 @@ public class Aplicacao {
                     in.nextLine();
                     // boolean result = buscaBuffer(info, buffer);
                     // if (!result) {
-                    //     particao.exibirValor(info);
+                    // particao.exibirValor(info);
                     // }
                     break;
                 case 4:
