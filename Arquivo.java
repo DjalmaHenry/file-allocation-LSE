@@ -10,15 +10,15 @@ public class Arquivo implements Comparable<Arquivo> {
         this.info = info;
     }
 
-    private int getProx() {
+    public int getProx() {
         return this.prox;
     }
 
-    private String getNome() {
+    public String getNome() {
         return this.nome;
     }
 
-    private byte[] getInfo() {
+    public byte[] getInfo() {
         return this.info;
     }
 

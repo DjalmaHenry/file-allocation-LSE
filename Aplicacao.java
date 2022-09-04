@@ -10,7 +10,6 @@ public class Aplicacao {
 
     public static void main(String[] args) throws ClassNotFoundException, IOException {
         Scanner in = new Scanner(System.in);
-        // Particao particao = new Particao();
         ArrayList<String> buffer = new ArrayList<String>();
         ArrayList<InfoParticao> infoParticao = new ArrayList<InfoParticao>();
         ArrayList<Arquivo> particao = new ArrayList<Arquivo>();
@@ -38,12 +37,12 @@ public class Aplicacao {
                     // adicionando informacao ao buffer
                     buffer.add(info);
 
-                    // salvando localizacao da informacao na particao
-                    InfoParticao inf = new InfoParticao(0, info);
-                    infoParticao.add(inf);
-
                     // convertendo informacao para bytes
                     byte[] bytes = stringToByte(info);
+
+                    // salvando localizacao da informacao na particao
+                    InfoParticao inf = new InfoParticao(0, info, bytes.length);
+                    infoParticao.add(inf);
 
                     // quebrando a informacao para salvar particionado
                     int n = bytes.length;
@@ -56,12 +55,13 @@ public class Aplicacao {
                             b2[i - b1.length] = bytes[i];
                         }
                     }
-                    Arquivo arq1 = new Arquivo(4, info, b1);
+                    Arquivo arq1 = new Arquivo(1, info, b1);
                     Arquivo arq2 = new Arquivo(-1, info, b2);
 
                     // guardando arquivo particionado
-                    particao.set(0, arq1);
-                    particao.set(4, arq2);
+                    particao.add(0, arq1);
+                    particao.add(1, arq2);
+
                     break;
                 case 2:
                     System.out.println("Informe algo para remover do armazenamento:");
@@ -77,9 +77,13 @@ public class Aplicacao {
                     in.nextLine();
                     boolean result = buscaBuffer(info, buffer);
                     if (!result) {
-                        int inicio = buscaInicioParticao(info, infoParticao);
-                        byte[] bytesArquivo = montaArquivo(inicio);
+                        InfoParticao infoArq = buscaInicioParticao(info, infoParticao);
+                        if (infoArq == null) {
+                            System.out.println("Arquivo não encontrado na partição!");
+                        }
+                        byte[] bytesArquivo = montaArquivo(infoArq.getInicio(), particao, infoArq.getTamanho());
                         String arquivo = byteToString(bytesArquivo);
+                        System.out.println("Info: " + arquivo);
                     }
                     break;
                 case 4:
@@ -131,12 +135,27 @@ public class Aplicacao {
         return info;
     }
 
-    private static int buscaInicioParticao(String info, ArrayList<InfoParticao> infoParticao) {
+    private static InfoParticao buscaInicioParticao(String info, ArrayList<InfoParticao> infoParticao) {
         for (int i = 0; i < infoParticao.size(); i++) {
             if (infoParticao.get(i).getNome().compareTo(info) == 0) {
-                return infoParticao.get(i).getInicio();
+                return infoParticao.get(i);
             }
         }
-        return -1;
+        return null;
+    }
+
+    private static byte[] montaArquivo(int inicio, ArrayList<Arquivo> particao, int tamanho) {
+        Arquivo atual = particao.get(inicio);
+        byte[] montagem1 = atual.getInfo();
+        byte[] montagem2 = particao.get(atual.getProx()).getInfo();
+        byte[] byteArquivo = new byte[tamanho];
+        for (int i = 0; i < tamanho; i++) {
+            if (i < montagem1.length) {
+                byteArquivo[i] = montagem1[i];
+            } else {
+                byteArquivo[i] = montagem2[i - montagem1.length];
+            }
+        }
+        return byteArquivo;
     }
 }
