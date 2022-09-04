@@ -20,8 +20,7 @@ public class Aplicacao {
             System.out.println("1 - Adicionar uma informação.");
             System.out.println("2 - Remover uma informação.");
             System.out.println("3 - Consultar uma informação.");
-            System.out.println("4 - Exibir todas informações.");
-            System.out.println("5 - Limpar buffer.");
+            System.out.println("4 - Limpar buffer.");
             System.out.println("0 - Sair do programa.");
             System.out.println("Informe a opção desejada:");
             System.out.print("-> ");
@@ -41,7 +40,7 @@ public class Aplicacao {
                     byte[] bytes = stringToByte(info);
 
                     // salvando localizacao da informacao na particao
-                    InfoParticao inf = new InfoParticao(0, info, bytes.length);
+                    InfoParticao inf = new InfoParticao(particao.size(), info, bytes.length);
                     infoParticao.add(inf);
 
                     // quebrando a informacao para salvar particionado
@@ -55,12 +54,12 @@ public class Aplicacao {
                             b2[i - b1.length] = bytes[i];
                         }
                     }
-                    Arquivo arq1 = new Arquivo(1, info, b1);
+                    Arquivo arq1 = new Arquivo(particao.size() + 1, info, b1);
                     Arquivo arq2 = new Arquivo(-1, info, b2);
 
                     // guardando arquivo particionado
-                    particao.add(0, arq1);
-                    particao.add(1, arq2);
+                    particao.add(particao.size(), arq1);
+                    particao.add(particao.size(), arq2);
 
                     break;
                 case 2:
@@ -87,9 +86,6 @@ public class Aplicacao {
                     }
                     break;
                 case 4:
-                    // particao.exibirValores();
-                    break;
-                case 5:
                     System.out.println("Buffer limpo!");
                     buffer.clear();
                     break;
