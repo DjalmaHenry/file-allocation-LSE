@@ -18,9 +18,8 @@ public class Aplicacao {
         while (true) {
             System.out.println("MENU:");
             System.out.println("1 - Adicionar uma informação.");
-            System.out.println("2 - Remover uma informação.");
-            System.out.println("3 - Consultar uma informação.");
-            System.out.println("4 - Limpar buffer.");
+            System.out.println("2 - Consultar uma informação.");
+            System.out.println("3 - Limpar buffer.");
             System.out.println("0 - Sair do programa.");
             System.out.println("Informe a opção desejada:");
             System.out.print("-> ");
@@ -61,13 +60,6 @@ public class Aplicacao {
                     particao.add(particao.size(), arq1);
                     particao.add(particao.size(), arq2);
 
-                    break;
-                case 2:
-                    System.out.println("Informe algo para remover do armazenamento:");
-                    System.out.print("-> ");
-                    info = in.next();
-                    in.nextLine();
-                    // particao.removerValor(info);
                     break;
                 case 3:
                     System.out.println("Informe algo para exibir:");
