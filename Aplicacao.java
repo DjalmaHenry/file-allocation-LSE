@@ -61,7 +61,7 @@ public class Aplicacao {
                     particao.add(particao.size(), arq2);
 
                     break;
-                case 3:
+                case 2:
                     System.out.println("Informe algo para exibir:");
                     System.out.print("-> ");
                     info = in.next();
@@ -71,13 +71,15 @@ public class Aplicacao {
                         InfoParticao infoArq = buscaInicioParticao(info, infoParticao);
                         if (infoArq == null) {
                             System.out.println("Arquivo não encontrado na partição!");
+                            break;
                         }
                         byte[] bytesArquivo = montaArquivo(infoArq.getInicio(), particao, infoArq.getTamanho());
                         String arquivo = byteToString(bytesArquivo);
                         System.out.println("Info: " + arquivo);
                     }
                     break;
-                case 4:
+                case 31
+                :
                     System.out.println("Buffer limpo!");
                     buffer.clear();
                     break;
